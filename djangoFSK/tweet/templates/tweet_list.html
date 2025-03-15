@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Django Project
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mt-4 mb-3 fw-bold text-primary">Welcome to Full Stack Django Project</h1>
+    <!-- Show search results -->
+    {% if tweets %}
+        {% for tweet in tweets %}
+            <h4 class="text-center text-primary bg-light p-2 rounded shadow-sm">
+                Showing results for:
+                <a href="{% url 'tweet_detail' tweet.id %}" class="fw-bold text-decoration-none text-primary">
+                    View Tweet
+                </a>
+                
+            </h4>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="d-flex justify-content-center mb-4">
+        <a class="btn btn-lg btn-success shadow-sm" href="{% url 'tweet_create' %}">
+            <i class="bi bi-plus-circle"></i> Create a Tweet
+        </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for tweet in tweets %}
+        <div class="col">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
+                <img src="{{ tweet.photo.url }}" class="card-img-top" alt="Tweet Image" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title text-primary fw-bold">{{ tweet.user.username }}</h5>
+                    <p class="card-text text-muted">{{ tweet.text }}</p>
+                </div>
+                {% if tweet.user == user %}
+                <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                    <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
